@@ -83,6 +83,7 @@
         Bot: getIcon("Bot"),
         Circle: getIcon("Circle"),
         HandHeart: getIcon("HandHeart"),
+        Heart: getIcon("Heart"), // Added Heart icon for Sanadkom
         Link2: getIcon("Link2"),
         MessageCircle: getIcon("MessageCircle"),
         User: getIcon("User"),
@@ -193,7 +194,7 @@
         }
       });
 
-      // --- AI INSIGHTS DATA (Profile Aware) ---
+      // --- AI INSIGHTS DATA ---
       const getAIInsights = (persona, stage, profileType) => {
         const isCitizen = persona === 'citizen';
         const baseInsights = [];
@@ -321,55 +322,21 @@
             ]
           },
           birth: birthJourney,
-          newborn: {
-            title: "Newborn Care (0-2m)",
-            subtitle: "Screening & Insurance",
+          child_health: {
+            title: "Child Health (0-12)",
+            subtitle: "Vaccines & Development",
             icon: "ShieldCheck",
-            description: "Essential health checks immediately after birth and initial insurance enrollment.",
+            description: "Manage your child's vaccinations, screenings, and development milestones.",
             status: "Action Required",
             steps: [
               { title: "Newborn Screening", desc: "Hearing, Heart, and Metabolic checks.", status: "current", channel: "Hospital", entity: "DoH" },
               { title: "Results", desc: "View results (reported to MOHAP).", status: "upcoming", channel: "TAMM", entity: "DoH" },
-              { title: "Referrals", desc: "ZHO or Medical Specialist trigger if flagged.", status: "upcoming", systemNote: "Auto-referral", channel: "TAMM Sahatna", entity: "DoH/ZHO" },
-              { title: "Insurance", desc: "Auto-enrollment on family policy.", status: "upcoming", channel: "TAMM", entity: "Daman/Thiqa" }
-            ]
-          },
-          early_childhood: { 
-            title: "Early Childhood (2m-4y)", 
-            subtitle: "Vaccines & Growth", 
-            icon: "Bike", 
-            description: "Routine immunization schedule and growth milestone tracking.", 
-            status: "Future",
-            steps: [
-                {title: "2-Month Vaccines", desc: "Schedule clinic visit", status: "upcoming", channel: "TAMM Sahatna", entity: "DoH"}, 
-                {title: "4-Month Vaccines", desc: "Schedule clinic visit", status: "upcoming", channel: "TAMM Sahatna", entity: "DoH"}, 
-                {title: "1-Year Checkup", desc: "Growth & development review", status: "upcoming", channel: "Clinic", entity: "DoH"}
-            ]
-          },
-          school_age: { 
-            title: "School Age (4-12y)", 
-            subtitle: "Health & Education", 
-            icon: "School", 
-            description: "School entry health screening and education profile management.", 
-            status: "Future",
-            steps: [
-                {title: "Pre-School Screening", desc: "Vision & Dental check", status: "upcoming", channel: "Clinic", entity: "DoH"},
-                {title: "Vaccination Update", desc: "Ensure school readiness", status: "upcoming", channel: "TAMM", entity: "DoH"}
-            ]
-          },
-          education: {
-            title: "School Entry",
-            subtitle: "Registration",
-            icon: "GraduationCap",
-            description: "Register your child for school and manage academic profiles.",
-            status: "Future",
-            steps: [
-                {title: "Create Profile", desc: "Link child to ADEK system.", status: "upcoming", channel: "TAMM", entity: "ADEK"},
-                {title: "Reserve Seat", desc: "Book based on catchment area.", status: "upcoming", channel: "TAMM", entity: "ADEK"}
+              { title: "Vaccine Schedule", desc: "View required vaccines timeline.", status: "upcoming", channel: "TAMM", entity: "DoH" },
+              { title: "School Readiness", desc: "Vaccine status shared with ADEK.", status: "upcoming", channel: "Backend", entity: "ADEK" }
             ]
           },
           adolescent: {
-            title: "Adolescent (13-18y)",
+            title: "Adolescent Health (13-18)",
             subtitle: "Growth & Wellbeing",
             icon: "UserRound",
             description: "Health tracking during teenage years, including mental wellbeing and puberty checks.",
@@ -406,7 +373,7 @@
           sanadkom: { 
             title: "Sanadkom", 
             subtitle: "End of Life", 
-            icon: "HandHeart", 
+            icon: "Heart", // Changed to Heart icon
             description: "Bereavement support and official procedures.", 
             status: "Future",
             steps: [
@@ -416,7 +383,6 @@
                 {title: "Permits", desc: "Burial/Transport", status: "upcoming", channel: "TAMM", entity: "Municipalities"}
             ]
           },
-          // BRANCHES
           housing: {
             title: "Housing & Support",
             subtitle: "ISKAN & Benefits",
@@ -706,6 +672,7 @@
         const handleTimelineAction = (actionLabel) => { if (actionLabel === "Start Naming" || actionLabel === "Issue Certificate") { setIsNamingModalOpen(true); } if (actionLabel === "Reveal Gender") { setIsRevealModalOpen(true); } };
         const handleNameSubmit = (name) => { setBabyName(name); };
         const handleGenderReveal = (gender) => { setRevealedGender(gender); };
+        const toggleJourneyVisibility = (id) => { setVisibleJourneyIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]); };
         const handleRestartMarriage = () => { alert("New Marriage Application Started! (Prototype: Data reset)"); };
 
         // --- PROFILE-SPECIFIC SPINE LOGIC (Updated to split Children and Parent clearly) ---
@@ -727,7 +694,7 @@
                 ];
             } else if (profile === 'father') {
                 return [
-                    { id: "elderly", label: "Elderly Care", type: 'main', branches: [{id: 'sanadkom', label: 'End of Life', icon: 'HandHeart'}] }
+                    { id: "elderly", label: "Elderly Care", type: 'main', branches: [{id: 'sanadkom', label: 'Sanadkom', icon: 'Heart'}] }
                 ];
             }
             return [];
@@ -787,24 +754,53 @@
                         {VISIBLE_SPINE.map((s, i) => {
                              const isActive = activeJourneyKey === s.id;
                              const hasBranch = s.branches && s.branches.length > 0;
+                             
                              return (
                                 <div key={s.id} className="flex flex-col items-center relative mx-8 group">
-                                    <button onClick={() => handleJourneyClick(s.id)} className={`w-14 h-14 rounded-full flex items-center justify-center border-4 transition-all z-10 relative bg-white ${isActive ? 'border-teal-600 ring-4 ring-teal-50 shadow-lg scale-110' : 'border-slate-200 text-slate-400 hover:border-teal-300 hover:text-teal-600'}`}><div className={`w-3 h-3 rounded-full ${isActive ? 'bg-teal-600' : 'bg-slate-300 group-hover:bg-teal-400'}`}></div></button>
-                                    <span className={`absolute top-16 text-xs font-bold whitespace-nowrap mt-1 ${isActive ? 'text-teal-900' : 'text-slate-500'}`}>{s.label}</span>
+                                    <div className="relative z-10">
+                                        <button 
+                                            onClick={() => handleJourneyClick(s.id)}
+                                            className={`w-14 h-14 rounded-full flex items-center justify-center border-4 transition-all z-10 relative bg-white
+                                                ${isActive ? 'border-teal-600 ring-4 ring-teal-50 shadow-lg scale-110' : 'border-slate-200 text-slate-400 hover:border-teal-300 hover:text-teal-600'}
+                                            `}
+                                        >
+                                            <div className={`w-3 h-3 rounded-full ${isActive ? 'bg-teal-600' : 'bg-slate-300 group-hover:bg-teal-400'}`}></div>
+                                        </button>
+                                    </div>
+                                    
+                                    <div className="mt-2 text-xs font-bold text-center h-8 flex items-start justify-center z-20">
+                                        <span className={`whitespace-nowrap ${isActive ? 'text-teal-900' : 'text-slate-500'}`}>{s.label}</span>
+                                    </div>
+
                                     {hasBranch && (
-                                        <div className="absolute top-14 flex justify-center w-[200px]">
-                                            {s.branches.map((branch, bIdx) => {
-                                                const isBranchActive = activeJourneyKey === branch.id;
-                                                const BranchIcon = Icons[branch.icon] || Icons.GitBranch;
-                                                const offsetX = s.branches.length > 1 ? (bIdx === 0 ? '-translate-x-6' : 'translate-x-6') : '';
-                                                return (
-                                                    <div key={branch.id} className={`flex flex-col items-center absolute top-0 ${offsetX}`}>
-                                                        <div className="h-12 w-0.5 bg-slate-300"></div>
-                                                        <button onClick={() => handleJourneyClick(branch.id)} className={`w-10 h-10 rounded-full flex items-center justify-center border-2 shadow-sm transition-all z-10 mt-0 bg-white ${isBranchActive ? 'border-amber-500 text-amber-600 ring-2 ring-amber-100 scale-110' : 'border-slate-200 text-slate-400 hover:border-amber-300 hover:text-amber-500'}`}><BranchIcon className="h-4 w-4" /></button>
-                                                        <span className={`text-[10px] font-bold mt-1 whitespace-nowrap px-1.5 py-0.5 rounded ${isBranchActive ? 'text-amber-700 bg-amber-50' : 'text-slate-400'}`}>{branch.label}</span>
-                                                    </div>
-                                                )
-                                            })}
+                                        <div className="flex flex-col items-center w-full">
+                                            <div className="h-4 w-0.5 bg-slate-300"></div> 
+                                            
+                                            <div className="flex justify-center gap-4 relative">
+                                                 {s.branches.length > 1 && (
+                                                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] h-0.5 bg-slate-300"></div>
+                                                 )}
+
+                                                 {s.branches.map((branch) => {
+                                                     const isBranchActive = activeJourneyKey === branch.id;
+                                                     const BranchIcon = Icons[branch.icon] || Icons.GitBranch;
+                                                     return (
+                                                         <div key={branch.id} className="flex flex-col items-center relative pt-2">
+                                                             {s.branches.length > 1 && <div className="absolute top-0 h-2 w-0.5 bg-slate-300"></div>}
+                                                             
+                                                             <button 
+                                                                 onClick={() => handleJourneyClick(branch.id)}
+                                                                 className={`w-10 h-10 rounded-full flex items-center justify-center border-2 shadow-sm transition-all z-10 mt-0 bg-white 
+                                                                     ${isBranchActive ? 'border-amber-500 text-amber-600 ring-2 ring-amber-100 scale-110' : 'border-slate-200 text-slate-400 hover:border-amber-300 hover:text-amber-500'}
+                                                                 `}
+                                                             >
+                                                                 <BranchIcon className="h-4 w-4" />
+                                                             </button>
+                                                             <span className={`text-[10px] font-bold mt-1 whitespace-nowrap px-1.5 py-0.5 rounded ${isBranchActive ? 'text-amber-700 bg-amber-50' : 'text-slate-400'}`}>{branch.label}</span>
+                                                         </div>
+                                                     )
+                                                 })}
+                                            </div>
                                         </div>
                                     )}
                                 </div>
