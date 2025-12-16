@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TAMM Life Events Medical Hub</title>
+    <title>TAMM Life Events Medical Hub - IoT Trends</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -125,6 +125,10 @@
         Bell: getIcon("Bell"), 
         Pill: getIcon("Pill"),
         Heart: getIcon("Heart"),
+        CreditCard: getIcon("CreditCard"),
+        Banknote: getIcon("Banknote"),
+        TrendingUp: getIcon("TrendingUp"),
+        Ambulance: getIcon("Ambulance"),
       };
 
       // --- UI COMPONENTS ---
@@ -143,7 +147,8 @@
           outline: "border border-slate-200 bg-white hover:bg-slate-50 text-slate-900",
           ghost: "hover:bg-slate-100 text-slate-700",
           secondary: "bg-slate-100 text-slate-900 hover:bg-slate-200",
-          purple: "bg-purple-600 text-white hover:bg-purple-700 shadow-md shadow-purple-600/20", 
+          purple: "bg-purple-600 text-white hover:bg-purple-700 shadow-md shadow-purple-600/20",
+          red: "bg-rose-600 text-white hover:bg-rose-700 shadow-md shadow-rose-600/20",
         };
         const sizes = { default: "h-10 px-4 py-2", sm: "h-8 rounded-lg px-3 text-xs", icon: "h-10 w-10" };
         return (
@@ -161,6 +166,7 @@
           success: "bg-emerald-50 text-emerald-700 border border-emerald-200",
           purple: "bg-purple-50 text-purple-700 border border-purple-200",
           red: "bg-red-50 text-red-700 border border-red-200",
+          gold: "bg-yellow-50 text-yellow-800 border border-yellow-200",
         };
         return <div className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${variants[variant]} ${className || ""}`}>{children}</div>;
       };
@@ -252,17 +258,17 @@
         };
         
         return {
-          premarital: { title: "Premarital Screening", subtitle: "Health readiness", icon: "HeartHandshake", description: "Complete your screening to ensure a healthy future family. Results are valid for 3 months.", status: "In Progress", steps: [{ title: "Check Requirements", desc: "View checklist for citizens vs residents.", status: "completed", channel: "TAMM", entity: "DCD/ADJD" }, { title: "Book Appointment", desc: "Choose a SEHA facility near you.", status: "current", actionLabel: "Book Appointment", channel: "TAMM Sahatna", entity: "SEHA" }, { title: "Attend Screening", desc: "Complete lab tests at the clinic.", status: "upcoming", channel: "Clinic", entity: "SEHA" }, { title: "Receive Results", desc: "Digital results issued.", status: "upcoming", channel: "TAMM", entity: "DoH" }, { title: "Marriage Readiness", desc: "Status automatically updated for ADJD.", status: "upcoming", channel: "Backend", entity: "ADJD" }] },
-          marriage: { title: "Marriage Contract", subtitle: "Legal & Religious", icon: "Users", description: "Apply for your marriage contract digitally. We've pre-filled your details.", status: "In Progress", steps: [{ title: "Application", desc: "Start your marriage file with ADJD.", status: "completed", channel: "TAMM", entity: "ADJD" }, { title: "Eligibility Check", desc: "We verify your premarital screening status.", status: "completed", channel: "Backend", entity: "DoH" }, { title: "Book Ceremony", desc: "Choose a court or authorized officiant.", status: "current", channel: "TAMM", entity: "ADJD" }, { title: "Digital Contract", desc: "Receive your official marriage contract instantly.", status: "upcoming", channel: "TAMM Wallet", entity: "ADJD" }] },
+          premarital: { title: "Premarital Screening", subtitle: "Health readiness", icon: "HeartHandshake", description: "Complete your screening to ensure a healthy future family. Results are valid for 3 months.", status: "In Progress", steps: [{ title: "Check Requirements", desc: "View checklist for citizens vs residents.", status: "completed", channel: "TAMM", entity: "DCD/ADJD" }, { title: "Book Appointment", desc: "Choose a SEHA facility near you.", status: "current", actionLabel: "Book Appointment", channel: "TAMM Sahatna", entity: "SEHA", insurance: "Thiqa: Fully Covered" }, { title: "Attend Screening", desc: "Complete lab tests at the clinic.", status: "upcoming", channel: "Clinic", entity: "SEHA" }, { title: "Receive Results", desc: "Digital results issued.", status: "upcoming", channel: "TAMM", entity: "DoH" }, { title: "Marriage Readiness", desc: "Status automatically updated for ADJD.", status: "upcoming", channel: "Backend", entity: "ADJD" }] },
+          marriage: { title: "Marriage Contract", subtitle: "Legal & Religious", icon: "Users", description: "Apply for your marriage contract digitally. We've pre-filled your details.", status: "In Progress", steps: [{ title: "Application", desc: "Start your marriage file with ADJD.", status: "completed", channel: "TAMM", entity: "ADJD" }, { title: "Medeem Grant", desc: "Financial support for eligible citizens.", status: "completed", channel: "Medeem", entity: "DCD", financial: "Approved • 75,000 AED" }, { title: "Eligibility Check", desc: "We verify your premarital screening status.", status: "completed", channel: "Backend", entity: "DoH" }, { title: "Book Ceremony", desc: "Choose a court or authorized officiant.", status: "current", channel: "TAMM", entity: "ADJD" }, { title: "Digital Contract", desc: "Receive your official marriage contract instantly.", status: "upcoming", channel: "TAMM Wallet", entity: "ADJD" }] },
           preconception: { title: "Family Planning", subtitle: "Pre-conception Support", icon: "HeartPulse", description: "Optional health checks and support for starting a family.", status: "Future", steps: [{ title: "Health Profile", desc: "Complete your baseline health check.", status: "upcoming", channel: "TAMM", entity: "DoH" }, { title: "Clinical Consult", desc: "Book a pre-conception visit if needed.", status: "upcoming", channel: "Clinic", entity: "SEHA" }, { title: "IVF Support", desc: "Check eligibility for fertility treatments.", status: "upcoming", channel: "TAMM", entity: "DoH" }] },
-          maternity: { title: "Maternity Journey", subtitle: "Antenatal", icon: "Stethoscope", description: "Track your pregnancy milestones, appointments, and care plan.", status: "In Progress", steps: [{ title: "Confirm Pregnancy", desc: "Register your maternity file.", status: "completed", channel: "TAMM", entity: "DoH" }, { title: "Care Plan", desc: "View your 9-visit antenatal schedule.", status: "current", channel: "TAMM", entity: "DoH" }, { title: "Gender Reveal", desc: revealedGender ? `It's a ${revealedGender}!` : "Ultrasound results ready.", status: revealedGender ? "completed" : "current", actionLabel: revealedGender ? null : "Reveal Gender", channel: "TAMM", entity: "DoH" }, { title: "Pre-Capture IDs", desc: "Upload parent docs now to save time at birth.", status: "upcoming", channel: "TAMM", entity: "ICP" }, { title: "Birth Notification", desc: "Provider submits data.", status: "upcoming", channel: "Provider", entity: "Hospital" }] },
+          maternity: { title: "Maternity Journey", subtitle: "Antenatal", icon: "Stethoscope", description: "Track your pregnancy milestones, appointments, and care plan.", status: "In Progress", steps: [{ title: "Confirm Pregnancy", desc: "Register your maternity file.", status: "completed", channel: "TAMM", entity: "DoH" }, { title: "Care Plan", desc: "View your 9-visit antenatal schedule.", status: "current", channel: "TAMM", entity: "DoH", insurance: "Thiqa: Fully Covered" }, { title: "Gender Reveal", desc: revealedGender ? `It's a ${revealedGender}!` : "Ultrasound results ready.", status: revealedGender ? "completed" : "current", actionLabel: revealedGender ? null : "Reveal Gender", channel: "TAMM", entity: "DoH" }, { title: "Pre-Capture IDs", desc: "Upload parent docs now to save time at birth.", status: "upcoming", channel: "TAMM", entity: "ICP" }, { title: "Birth Notification", desc: "Provider submits data.", status: "upcoming", channel: "Provider", entity: "Hospital" }] },
           birth: birthJourney,
-          child_health: { title: "Child Health (0-12)", subtitle: "Vaccines", icon: "ShieldCheck", description: "Manage your child's vaccinations, screenings, and development milestones.", status: "Action Required", steps: [{ title: "Newborn Screening", desc: "Hearing, Heart, and Metabolic checks.", status: "current", channel: "Hospital", entity: "DoH" }, { title: "Results", desc: "View results reported to MOHAP.", status: "upcoming", channel: "TAMM", entity: "DoH" }, { title: "Vaccine Schedule", desc: "View required vaccines timeline.", status: "upcoming", channel: "TAMM", entity: "DoH" }, { title: "School Readiness", desc: "Vaccine status shared with ADEK.", status: "upcoming", channel: "Backend", entity: "ADEK" }] },
+          child_health: { title: "Child Health (0-12)", subtitle: "Vaccines", icon: "ShieldCheck", description: "Manage your child's vaccinations, screenings, and development milestones.", status: "Action Required", steps: [{ title: "Newborn Screening", desc: "Hearing, Heart, and Metabolic checks.", status: "current", channel: "Hospital", entity: "DoH", insurance: "Thiqa: Fully Covered" }, { title: "Results", desc: "View results reported to MOHAP.", status: "upcoming", channel: "TAMM", entity: "DoH" }, { title: "Vaccine Schedule", desc: "View required vaccines timeline.", status: "upcoming", channel: "TAMM", entity: "DoH" }, { title: "School Readiness", desc: "Vaccine status shared with ADEK.", status: "upcoming", channel: "Backend", entity: "ADEK" }] },
           adolescent: { title: "Adolescent Health", subtitle: "Growth", icon: "UserRound", description: "Health tracking during teenage years, including mental wellbeing and puberty checks.", status: "Future", steps: [{ title: "Annual Checkup", desc: "Physical growth tracking.", status: "upcoming", channel: "Clinic", entity: "DoH" }, { title: "HPV Vaccine", desc: "Scheduled immunization.", status: "upcoming", channel: "School/Clinic", entity: "DoH" }, { title: "Mental Wellbeing", desc: "Self-assessment and support.", status: "upcoming", channel: "TAMM", entity: "DoH" }] },
           adult: { title: "Adult Health", subtitle: "Prevention", icon: "Activity", description: "Wellness checks and preventive care for adults.", status: "Future", steps: [{title: "Ifhas Screening", desc: "Book your comprehensive annual checkup.", status: "upcoming", channel: "Clinic", entity: "DoH"}, {title: "Chronic Disease", desc: "Risk assessment.", status: "upcoming", channel: "TAMM", entity: "DoH"}] },
           elderly: { title: "Elderly Care", subtitle: "Support", icon: "Users", description: "Home care, medical equipment, and caregiver support for your parent.", status: "Active", steps: [{title: "Geriatric Assessment", desc: "Book review", status: "current", channel: "TAMM", entity: "DoH"}, {title: "Home Care", desc: "Request mobile support", status: "upcoming", channel: "TAMM", entity: "DoH/DCD"}, {title: "Assistive Devices", desc: "Wheelchair/Bed request", status: "upcoming", channel: "TAMM", entity: "ZHO"}] },
           sanadkom: { title: "Sanadkom", subtitle: "End of Life", icon: "Heart", description: "Bereavement support and official procedures.", status: "Future", steps: [{title: "Notification", desc: "Hospital reports death", status: "upcoming", channel: "Provider", entity: "Hospital"}, {title: "Certificate", desc: "Digital death certificate", status: "upcoming", channel: "TAMM", entity: "DoH"}, {title: "Benefits", desc: "Sanadkom support launch", status: "upcoming", channel: "TAMM", entity: "DCD"}, {title: "Permits", desc: "Burial/Transport", status: "upcoming", channel: "TAMM", entity: "Municipalities"}] },
-          housing: { title: "Housing & Support", subtitle: "ISKAN", icon: "Home", description: "Apply for housing grants and social allowances.", status: "In Progress", steps: [{ title: "Eligibility Check", desc: "Check if you qualify.", status: "completed", channel: "TAMM", entity: "ISKAN" }, { title: "Application", desc: "Submit your request.", status: "current", channel: "TAMM", entity: "ISKAN" }, { title: "Committee Review", desc: "Wait for decision.", status: "upcoming", channel: "Backend", entity: "ISKAN" }] },
+          housing: { title: "Housing & Support", subtitle: "ISKAN", icon: "Home", description: "Apply for housing grants and social allowances.", status: "In Progress", steps: [{ title: "Eligibility Check", desc: "Check if you qualify.", status: "completed", channel: "TAMM", entity: "ISKAN" }, { title: "Application", desc: "Submit your request.", status: "current", channel: "TAMM", entity: "ISKAN" }, { title: "Committee Review", desc: "Wait for decision.", status: "upcoming", channel: "Backend", entity: "ISKAN" }, { title: "Loan Approval", desc: "Housing loan status.", status: "upcoming", channel: "Backend", entity: "ADHA", financial: "Eligible • 1.75M AED" }] },
           work: { title: "Work & Leave", subtitle: "Employment", icon: "Briefcase", description: "Manage maternity/paternity leave and return to work.", status: "Future", steps: [{ title: "Employer Sync", desc: "Link employment record.", status: "upcoming", channel: "TAMM", entity: "MOHRE" }, { title: "Leave Request", desc: "Apply for leave.", status: "upcoming", channel: "TAMM", entity: "Employer" }, { title: "Return to Work", desc: "Confirm return date.", status: "upcoming", channel: "TAMM", entity: "Employer" }] },
           university: { title: "University Admission", subtitle: "Admission", icon: "BookOpen", description: "Complete medical fitness tests required for university admission.", status: "Future", steps: [{title: "Admission Exam", desc: "Book medical fitness test.", status: "upcoming", channel: "TAMM Sahatna", entity: "SEHA"}, {title: "Vaccine Update", desc: "Ensure boosters are current.", status: "upcoming", channel: "Clinic", entity: "DoH"}, {title: "Clearance Certificate", desc: "Digital fitness certificate.", status: "upcoming", channel: "TAMM Wallet", entity: "DoH"}] },
           work_screening: { title: "Work Fitness", subtitle: "Employment", icon: "Briefcase", description: "Mandatory health screening for new employment or visa renewal.", status: "Future", steps: [{title: "Book Screening", desc: "Schedule visa medical.", status: "upcoming", channel: "TAMM Sahatna", entity: "DOH/SEHA"}, {title: "Visit Center", desc: "Complete blood test & X-ray.", status: "upcoming", channel: "Screening Center", entity: "SEHA"}, {title: "Fitness Certificate", desc: "Result sent to ICP/MOHRE.", status: "upcoming", channel: "Backend", entity: "DoH"}] },
@@ -272,12 +278,247 @@
 
       // --- COMPONENTS ---
 
-      // ... (FathersHealthCard, DocumentPreviewModal, BookingModal, BabyNamingModal, GenderRevealModal components reused) ...
-      function FathersHealthCard() { return (<Card className="border-teal-100 bg-gradient-to-br from-white to-teal-50/30"><CardHeader className="pb-3 border-b border-teal-100/50"><div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="p-2 bg-teal-100 rounded-lg text-teal-700"><Icons.Watch className="h-5 w-5" /></div><div><CardTitle className="text-base flex items-center gap-2">Remote Health Monitoring</CardTitle><div className="flex items-center gap-1.5 text-xs text-teal-600 mt-0.5"><span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span></span>Live Data (Home Device)</div></div></div><Badge variant="success" className="bg-emerald-100 text-emerald-700 border-0">Stable</Badge></div></CardHeader><CardContent className="pt-4 grid grid-cols-2 md:grid-cols-4 gap-4"><div className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center"><Icons.HeartPulse className="h-5 w-5 text-rose-500 mb-1" /><div className="text-lg font-bold text-slate-900">72 <span className="text-[10px] text-slate-400 font-normal">bpm</span></div><div className="text-[10px] text-slate-500">Heart Rate</div></div><div className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center"><Icons.Activity className="h-5 w-5 text-blue-500 mb-1" /><div className="text-lg font-bold text-slate-900">120/80</div><div className="text-[10px] text-slate-500">Blood Pressure</div></div><div className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center"><Icons.Droplets className="h-5 w-5 text-amber-500 mb-1" /><div className="text-lg font-bold text-slate-900">5.4 <span className="text-[10px] text-slate-400 font-normal">mmol/L</span></div><div className="text-[10px] text-slate-500">Glucose</div></div><div className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center"><Icons.Thermometer className="h-5 w-5 text-orange-500 mb-1" /><div className="text-lg font-bold text-slate-900">36.6 <span className="text-[10px] text-slate-400 font-normal">°C</span></div><div className="text-[10px] text-slate-500">Temp</div></div></CardContent></Card>); }
+      // NEW COMPONENT: HealthTrendModal
+      function HealthTrendModal({ isOpen, onClose, vitalType }) {
+        if (!isOpen) return null;
+        
+        const [viewMode, setViewMode] = useState('7days'); // '24h' or '7days'
+
+        // Mock configs with dual data
+        const configs = {
+            'Heart Rate': { 
+                unit: 'bpm', 
+                avg: 72, 
+                color: 'bg-rose-500', 
+                data7Days: [68, 70, 72, 75, 71, 69, 72],
+                data24Hours: [70, 71, 74, 78, 73, 70, 69] 
+            },
+            'Blood Pressure': { 
+                unit: 'mmHg', 
+                avg: '120/80', 
+                color: 'bg-blue-500', 
+                data7Days: [118, 120, 122, 119, 121, 120, 118],
+                data24Hours: [119, 121, 123, 120, 118, 119, 120]
+            },
+            'Glucose': { 
+                unit: 'mmol/L', 
+                avg: 5.4, 
+                color: 'bg-amber-500', 
+                data7Days: [5.2, 5.5, 5.8, 5.4, 5.3, 5.6, 5.4],
+                data24Hours: [5.3, 5.6, 6.1, 5.8, 5.4, 5.3, 5.2] 
+            },
+            'Temp': { 
+                unit: '°C', 
+                avg: 36.6, 
+                color: 'bg-orange-500', 
+                data7Days: [36.5, 36.6, 36.7, 36.6, 36.5, 36.6, 36.6],
+                data24Hours: [36.6, 36.6, 36.7, 36.8, 36.7, 36.6, 36.6] 
+            }
+        };
+        
+        const config = configs[vitalType] || configs['Heart Rate'];
+        const data = viewMode === '7days' ? config.data7Days : config.data24Hours;
+        const maxVal = vitalType === 'Heart Rate' ? 100 : vitalType === 'Glucose' ? 10 : vitalType === 'Temp' ? 42 : 180;
+
+        return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4" onClick={onClose}>
+                <div className="bg-white rounded-2xl w-full max-w-sm p-6 shadow-2xl animate-in fade-in zoom-in duration-200" onClick={e => e.stopPropagation()}>
+                    
+                    {/* Header with Toggle */}
+                    <div className="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 className="text-lg font-bold text-slate-900">{vitalType} Trends</h3>
+                            <div className="flex bg-slate-100 p-1 rounded-lg mt-2 w-fit">
+                                <button 
+                                    onClick={() => setViewMode('24h')} 
+                                    className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${viewMode === '24h' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                >
+                                    24 Hours
+                                </button>
+                                <button 
+                                    onClick={() => setViewMode('7days')} 
+                                    className={`px-3 py-1 text-[10px] font-bold rounded-md transition-all ${viewMode === '7days' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                >
+                                    7 Days
+                                </button>
+                            </div>
+                        </div>
+                        <button onClick={onClose} className="p-1 hover:bg-slate-100 rounded-full transition-colors"><Icons.X className="h-5 w-5 text-slate-400" /></button>
+                    </div>
+                    
+                    {/* Chart Area */}
+                    <div className="h-40 flex items-end justify-between gap-2 mb-6 px-2">
+                        {data.map((val, i) => (
+                            <div key={i} className="w-full h-full flex flex-col justify-end items-center gap-1 group cursor-pointer">
+                                 <div 
+                                    className={`w-full rounded-t-sm opacity-60 group-hover:opacity-100 transition-opacity ${config.color}`} 
+                                    style={{ height: `${(typeof val === 'number' ? (val / maxVal) * 100 : 50)}%` }}
+                                 ></div>
+                                 <span className="text-[10px] text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity absolute -mt-4 bg-slate-800 text-white px-1 rounded">{val}</span>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
+                        <div className="text-xs text-slate-500">Current Average</div>
+                        <div className="text-xl font-bold text-slate-900">{config.avg} <span className="text-xs font-normal text-slate-400">{config.unit}</span></div>
+                    </div>
+                    
+                    <Button className="w-full mt-4" onClick={onClose}>Close View</Button>
+                </div>
+            </div>
+        );
+      }
+
+      function FathersHealthCard({ onVitalClick, onEmergency }) { 
+        return (
+            <Card className="border-teal-100 bg-gradient-to-br from-white to-teal-50/30">
+                <CardHeader className="pb-3 border-b border-teal-100/50">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <div className="p-2 bg-teal-100 rounded-lg text-teal-700"><Icons.Watch className="h-5 w-5" /></div>
+                            <div>
+                                <CardTitle className="text-base flex items-center gap-2">Remote Health Monitoring</CardTitle>
+                                <div className="flex items-center gap-1.5 text-xs text-teal-600 mt-0.5">
+                                    <span className="relative flex h-2 w-2">
+                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+                                        <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+                                    </span>
+                                    Live Data (Home Device)
+                                </div>
+                            </div>
+                        </div>
+                        {/* Emergency Button */}
+                        <button 
+                            onClick={onEmergency}
+                            className="bg-rose-100 hover:bg-rose-200 text-rose-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 border border-rose-200"
+                        >
+                            <Icons.AlertTriangle className="h-3.5 w-3.5" /> Emergency
+                        </button>
+                    </div>
+                </CardHeader>
+                <CardContent className="pt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {/* Stats - Clickable */}
+                    <div onClick={() => onVitalClick('Heart Rate')} className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center cursor-pointer hover:border-teal-300 hover:shadow-md transition-all group">
+                        <Icons.HeartPulse className="h-5 w-5 text-rose-500 mb-1 group-hover:scale-110 transition-transform" />
+                        <div className="text-lg font-bold text-slate-900">72 <span className="text-[10px] text-slate-400 font-normal">bpm</span></div>
+                        <div className="text-[10px] text-slate-500">Heart Rate</div>
+                    </div>
+                    <div onClick={() => onVitalClick('Blood Pressure')} className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center cursor-pointer hover:border-teal-300 hover:shadow-md transition-all group">
+                        <Icons.Activity className="h-5 w-5 text-blue-500 mb-1 group-hover:scale-110 transition-transform" />
+                        <div className="text-lg font-bold text-slate-900">120/80</div>
+                        <div className="text-[10px] text-slate-500">Blood Pressure</div>
+                    </div>
+                    <div onClick={() => onVitalClick('Glucose')} className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center cursor-pointer hover:border-teal-300 hover:shadow-md transition-all group">
+                        <Icons.Droplets className="h-5 w-5 text-amber-500 mb-1 group-hover:scale-110 transition-transform" />
+                        <div className="text-lg font-bold text-slate-900">5.4 <span className="text-[10px] text-slate-400 font-normal">mmol/L</span></div>
+                        <div className="text-[10px] text-slate-500">Glucose</div>
+                    </div>
+                    <div onClick={() => onVitalClick('Temp')} className="bg-white p-3 rounded-xl border border-slate-100 shadow-sm flex flex-col items-center text-center cursor-pointer hover:border-teal-300 hover:shadow-md transition-all group">
+                        <Icons.Thermometer className="h-5 w-5 text-orange-500 mb-1 group-hover:scale-110 transition-transform" />
+                        <div className="text-lg font-bold text-slate-900">36.6 <span className="text-[10px] text-slate-400 font-normal">°C</span></div>
+                        <div className="text-[10px] text-slate-500">Temp</div>
+                    </div>
+                </CardContent>
+            </Card>
+        ); 
+      }
+
       function DocumentPreviewModal({ isOpen, onClose, docType, persona, babyName }) { if (!isOpen) return null; const activePersona = persona === 'citizen' ? "Omar Al Nuaimi" : "Hassan Khan"; const baby = babyName || (persona === 'citizen' ? "Noor Al Nuaimi" : "Lina Khan"); return (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" onClick={onClose}><div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200" onClick={(e) => e.stopPropagation()}><div className="bg-slate-900 p-4 flex justify-between items-center text-white"><div className="flex items-center gap-2"><Icons.FileText className="h-5 w-5" /><span className="font-semibold">Digital Document Viewer</span></div><button onClick={onClose}><Icons.X className="h-5 w-5" /></button></div><div className="p-8 bg-slate-50 flex flex-col items-center"><div className="bg-white border-2 border-slate-200 w-full aspect-[1/1.4] shadow-lg p-8 relative flex flex-col"><div className="flex justify-between items-start mb-8"><div className="text-center w-full"><div className="mx-auto w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center mb-2 text-white"><Icons.Shield className="h-6 w-6" /></div><h2 className="text-xl font-serif font-bold text-slate-900 uppercase tracking-widest">{docType}</h2><div className="text-[10px] text-slate-500 uppercase tracking-widest">United Arab Emirates</div></div></div><div className="flex-1 space-y-6">{docType === 'Family Book' && (<><div className="border-b border-slate-100 pb-2"><div className="text-[10px] text-slate-400 uppercase">Head of Family</div><div className="text-lg font-medium font-serif">{activePersona}</div></div><div className="border-b border-slate-100 pb-2"><div className="text-[10px] text-slate-400 uppercase">Status</div><div className="text-sm font-medium">Citizen - Abu Dhabi</div></div><div className="border-b border-slate-100 pb-2"><div className="text-[10px] text-slate-400 uppercase">Dependents</div><div className="text-sm">Aisha (Spouse), {baby} (Child)</div></div></>)}{docType === 'Birth Certificate' && (<><div className="border-b border-slate-100 pb-2"><div className="text-[10px] text-slate-400 uppercase">Name of Child</div><div className="text-xl font-medium font-serif text-teal-800">{baby}</div></div><div className="grid grid-cols-2 gap-4"><div className="border-b border-slate-100 pb-2"><div className="text-[10px] text-slate-400 uppercase">Date of Birth</div><div className="text-sm font-medium">15 DEC 2025</div></div><div className="border-b border-slate-100 pb-2"><div className="text-[10px] text-slate-400 uppercase">Place of Birth</div><div className="text-sm font-medium">Abu Dhabi</div></div></div><div className="border-b border-slate-100 pb-2"><div className="text-[10px] text-slate-400 uppercase">Father's Name</div><div className="text-sm">{activePersona}</div></div></>)}{docType === 'Marriage Contract' && (<><div className="grid grid-cols-2 gap-8 border-b border-slate-100 pb-4"><div><div className="text-[10px] text-slate-400 uppercase">Husband</div><div className="text-lg font-serif">{activePersona}</div></div><div className="text-right"><div className="text-[10px] text-slate-400 uppercase">Wife</div><div className="text-lg font-serif">{persona === 'citizen' ? 'Aisha' : 'Mariam'}</div></div></div><div className="text-center pt-4"><div className="text-[10px] text-slate-400 uppercase">Date of Marriage</div><div className="text-sm font-medium">12 MAR 2024</div></div></>)}</div><div className="mt-8 flex justify-between items-end"><div className="text-center"><Icons.QrCode className="h-16 w-16 text-slate-800" /><div className="text-[8px] text-slate-400 mt-1">SCAN TO VERIFY</div></div><div className="text-right"><div className="h-12 w-12 rounded-full border-2 border-teal-700/30 flex items-center justify-center text-[10px] text-teal-800 font-bold uppercase rotate-12">Official<br/>Document</div></div></div></div><div className="flex gap-3 mt-6 w-full"><Button className="flex-1 bg-slate-900 text-white"><Icons.CheckCircle2 className="mr-2 h-4 w-4" /> Valid</Button><Button variant="outline" className="flex-1"><Icons.Send className="mr-2 h-4 w-4" /> Share</Button></div><Button onClick={onClose} className="w-full mt-4 h-12 text-base font-semibold bg-teal-700 text-white hover:bg-teal-800 shadow-lg">Back to Dashboard</Button></div></div></div>); }
       function BookingModal({ isOpen, onClose, onConfirm, serviceName }) { const [step, setStep] = useState(1); const [selectedCenter, setSelectedCenter] = useState(null); const [selectedDate, setSelectedDate] = useState(null); const [selectedTime, setSelectedTime] = useState(null); if (!isOpen) return null; const centers = [{ id: 1, name: "SEHA Main Center", distance: "2.5 km", time: "15 mins" }, { id: 2, name: "Mediclinic Airport Road", distance: "4.8 km", time: "22 mins" }, { id: 3, name: "Burjeel Hospital", distance: "6.1 km", time: "30 mins" }]; const dates = ["Mon, 15 Dec", "Tue, 16 Dec", "Wed, 17 Dec"]; const times = ["09:00 AM", "10:30 AM", "02:00 PM", "04:15 PM"]; const handleNext = () => { if (step === 1 && selectedCenter) setStep(2); if (step === 2 && selectedDate && selectedTime) setStep(3); }; const handleConfirm = () => { onConfirm(); setTimeout(() => { setStep(1); setSelectedCenter(null); setSelectedDate(null); setSelectedTime(null); onClose(); }, 500); }; return (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4"><div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300 relative flex flex-col max-h-[90vh]"><div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50"><div><h3 className="text-xl font-bold text-slate-900">Book Appointment</h3><p className="text-sm text-slate-500">{serviceName || "Medical Service"}</p></div><button onClick={onClose} className="p-2 bg-white rounded-full hover:bg-slate-100 border border-slate-200 transition-colors"><Icons.X className="h-5 w-5 text-slate-500" /></button></div><div className="p-6 overflow-y-auto"><div className="flex items-center gap-2 mb-8"><div className={`h-1 flex-1 rounded-full ${step >= 1 ? 'bg-teal-600' : 'bg-slate-200'}`}></div><div className={`h-1 flex-1 rounded-full ${step >= 2 ? 'bg-teal-600' : 'bg-slate-200'}`}></div><div className={`h-1 flex-1 rounded-full ${step >= 3 ? 'bg-teal-600' : 'bg-slate-200'}`}></div></div>{step === 1 && (<div className="space-y-4"><h4 className="font-semibold text-slate-900">Select Center</h4><div className="bg-slate-100 h-32 rounded-xl flex items-center justify-center text-slate-400 mb-4 border-2 border-dashed border-slate-200"><span className="flex items-center gap-2"><Icons.MapPin className="h-5 w-5" /> Map View</span></div><div className="space-y-2">{centers.map(center => (<div key={center.id} onClick={() => setSelectedCenter(center)} className={`p-4 rounded-xl border-2 cursor-pointer transition-all flex items-center justify-between ${selectedCenter?.id === center.id ? 'border-teal-600 bg-teal-50' : 'border-slate-100 hover:border-slate-200'}`}><div className="flex items-center gap-3"><div className={`p-2 rounded-full ${selectedCenter?.id === center.id ? 'bg-teal-200 text-teal-800' : 'bg-slate-100 text-slate-500'}`}><Icons.Building2 className="h-5 w-5" /></div><div><div className="font-semibold text-sm text-slate-900">{center.name}</div><div className="text-xs text-slate-500">{center.distance} • {center.time}</div></div></div>{selectedCenter?.id === center.id && <Icons.CheckCircle2 className="h-5 w-5 text-teal-600" />}</div>))}</div></div>)}{step === 2 && (<div className="space-y-6"><div><h4 className="font-semibold text-slate-900 mb-3">Select Date</h4><div className="flex gap-2 overflow-x-auto pb-2">{dates.map(date => (<button key={date} onClick={() => setSelectedDate(date)} className={`px-4 py-3 rounded-xl border text-sm font-medium whitespace-nowrap transition-all ${selectedDate === date ? 'bg-slate-900 text-white border-slate-900' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`}>{date}</button>))}</div></div><div><h4 className="font-semibold text-slate-900 mb-3">Select Time</h4><div className="grid grid-cols-2 gap-2">{times.map(time => (<button key={time} onClick={() => setSelectedTime(time)} className={`px-4 py-3 rounded-xl border text-sm font-medium transition-all ${selectedTime === time ? 'bg-teal-600 text-white border-teal-600' : 'bg-white border-slate-200 text-slate-600 hover:border-slate-300'}`}>{time}</button>))}</div></div></div>)}{step === 3 && (<div className="text-center space-y-6 py-4"><div className="w-20 h-20 bg-teal-50 rounded-full flex items-center justify-center mx-auto"><Icons.Calendar className="h-10 w-10 text-teal-600" /></div><div><h3 className="text-xl font-bold text-slate-900">Confirm Booking?</h3><p className="text-slate-500 text-sm mt-2">Please review your appointment details.</p></div><div className="bg-slate-50 p-4 rounded-xl text-left space-y-3 border border-slate-100"><div className="flex justify-between text-sm"><span className="text-slate-500">Service</span><span className="font-medium text-slate-900">{serviceName}</span></div><div className="flex justify-between text-sm"><span className="text-slate-500">Location</span><span className="font-medium text-slate-900">{selectedCenter?.name}</span></div><div className="flex justify-between text-sm"><span className="text-slate-500">Date & Time</span><span className="font-medium text-slate-900">{selectedDate}, {selectedTime}</span></div></div></div>)}</div><div className="p-6 border-t border-slate-100 bg-slate-50/50">{step < 3 ? (<Button onClick={handleNext} disabled={(step === 1 && !selectedCenter) || (step === 2 && (!selectedDate || !selectedTime))} className="w-full h-12 text-base">Continue</Button>) : (<Button onClick={handleConfirm} className="w-full h-12 text-base bg-teal-700 hover:bg-teal-800">Confirm Booking</Button>)}</div></div></div>); }
       function BabyNamingModal({ isOpen, onClose, onNameSubmit, persona }) { const [firstNameEn, setFirstNameEn] = useState(""); const [firstNameAr, setFirstNameAr] = useState(""); const [isSubmitting, setIsSubmitting] = useState(false); const [aiPrompt, setAiPrompt] = useState(""); const [aiSuggestions, setAiSuggestions] = useState([]); const [isGenerating, setIsGenerating] = useState(false); if (!isOpen) return null; const handleSubmit = () => { setIsSubmitting(true); setTimeout(() => { setIsSubmitting(false); onNameSubmit(firstNameEn); onClose(); }, 1500); }; const handleAiGenerate = () => { if (!aiPrompt) return; setIsGenerating(true); setAiSuggestions([]); setTimeout(() => { setIsGenerating(false); let results = ["Zayed", "Rashid", "Khalifa"]; if (aiPrompt.toLowerCase().includes("r")) results = ["Rashed", "Reem", "Rawda"]; if (aiPrompt.toLowerCase().includes("girl")) results = ["Latifa", "Shamsa", "Fatima"]; if (aiPrompt.toLowerCase().includes("modern")) results = ["Ayla", "Zain", "Kayan"]; setAiSuggestions(results); }, 1500); }; const selectSuggestion = (name) => { setFirstNameEn(name); setFirstNameAr("..."); }; return (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"><div className="bg-white rounded-2xl w-full max-w-md p-6 shadow-2xl animate-in fade-in zoom-in duration-200 overflow-hidden"><div className="flex items-center justify-between mb-4"><h3 className="text-xl font-bold text-slate-900">Name Your Baby</h3><button onClick={onClose}><Icons.X className="h-5 w-5 text-slate-400" /></button></div><div className="space-y-4"><div className="bg-purple-50 p-4 rounded-xl border border-purple-100 mb-4"><div className="flex items-center gap-2 mb-2"><Icons.Sparkles className="h-4 w-4 text-purple-600" /><h4 className="text-sm font-bold text-purple-900">Need inspiration? Ask AI</h4></div><div className="flex gap-2"><Input value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder="e.g. Traditional names starting with R" className="bg-white border-purple-200 focus:ring-purple-500 h-9 text-xs" /><Button variant="purple" size="sm" className="h-9 px-3" onClick={handleAiGenerate} disabled={!aiPrompt || isGenerating}>{isGenerating ? <Icons.Loader2 className="h-3 w-3 animate-spin" /> : <Icons.Wand2 className="h-3 w-3" />}</Button></div>{aiSuggestions.length > 0 && (<div className="mt-3 flex flex-wrap gap-2 animate-in slide-in-from-top-2">{aiSuggestions.map(name => (<button key={name} onClick={() => selectSuggestion(name)} className="bg-white border border-purple-200 text-purple-700 px-3 py-1 rounded-full text-xs font-medium hover:bg-purple-100 transition-colors">{name}</button>))}</div>)}</div><div className="bg-blue-50 p-3 rounded-lg flex items-start gap-2"><Icons.Info className="h-5 w-5 text-blue-600 mt-0.5" /><p className="text-xs text-blue-800">We will check your chosen name against {persona === 'citizen' ? 'ICP' : 'Official'} naming rules.</p></div><div><label className="block text-sm font-medium text-slate-700 mb-1">First Name (English)</label><Input value={firstNameEn} onChange={(e) => setFirstNameEn(e.target.value)} placeholder="e.g. Zayed" /></div><div><label className="block text-sm font-medium text-slate-700 mb-1">First Name (Arabic)</label><Input value={firstNameAr} onChange={(e) => setFirstNameAr(e.target.value)} placeholder="e.g. زايد" className="text-right" /></div><div className="pt-2"><div className="text-xs text-slate-500 mb-1">Family Name (Fixed)</div><div className="font-semibold text-slate-900 bg-slate-100 px-3 py-2 rounded-lg">{persona === 'citizen' ? 'Al Nuaimi' : 'Khan'}</div></div><Button onClick={handleSubmit} className="w-full mt-2" disabled={!firstNameEn || !firstNameAr || isSubmitting}>{isSubmitting ? (<span className="flex items-center gap-2"><Icons.Loader2 className="h-4 w-4 animate-spin" /> Checking Rules...</span>) : "Confirm Name"}</Button></div></div></div>); }
       function GenderRevealModal({ isOpen, onClose, onReveal }) { if(!isOpen) return null; return (<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md"><div className="bg-white p-8 rounded-2xl w-full max-w-sm text-center"><h3 className="text-2xl font-bold text-slate-900 mb-4">It's a Boy!</h3><Button onClick={()=>{onReveal("Boy"); onClose();}} className="w-full">Awesome</Button></div></div>); }
+
+      // --- NEW COMPONENT: FAMILY HEALTH SCORE ---
+      function FamilyHealthScore() {
+        const score = 82; 
+        const getColor = (s) => s >= 90 ? 'text-emerald-500' : s >= 70 ? 'text-amber-500' : 'text-red-500';
+        const getBg = (s) => s >= 90 ? 'bg-emerald-50' : s >= 70 ? 'bg-amber-50' : 'bg-red-50';
+        
+        return (
+            <Card className="overflow-hidden border-teal-100">
+                <div className="p-4 flex items-center justify-between">
+                    <div>
+                        <h3 className="font-bold text-slate-900 text-sm">Family Health Score</h3>
+                        <p className="text-xs text-slate-500 mt-1">Good standing. Keep it up!</p>
+                    </div>
+                    <div className="relative h-16 w-16 flex items-center justify-center">
+                        <svg className="h-full w-full -rotate-90" viewBox="0 0 36 36">
+                            <path className="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
+                            <path className={`${getColor(score)} transition-all duration-1000 ease-out`} strokeDasharray={`${score}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="3" />
+                        </svg>
+                        <span className={`absolute font-bold text-lg ${getColor(score)}`}>{score}</span>
+                    </div>
+                </div>
+                <div className={`px-4 py-3 ${getBg(score)} border-t border-slate-100 flex items-center gap-3`}>
+                    <div className={`p-1.5 rounded-full bg-white ${getColor(score)} shadow-sm`}>
+                        <Icons.TrendingUp className="h-4 w-4" />
+                    </div>
+                    <div>
+                        <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Next Action (+10 pts)</div>
+                        <div className="text-xs font-semibold text-slate-900">Complete 4-Month Vaccine</div>
+                    </div>
+                    <Button size="sm" variant="ghost" className="ml-auto h-7 text-xs hover:bg-white/50">Do it</Button>
+                </div>
+            </Card>
+        );
+      }
+
+      // --- NEW COMPONENT: PREDICTIVE NUDGE ---
+      function FutureOutlookCard({ journeyKey }) {
+        const getPrediction = () => {
+          const today = new Date();
+          const nextMonth = new Date(today);
+          nextMonth.setDate(today.getDate() + 45); 
+          const dateStr = nextMonth.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+
+          if (journeyKey === 'maternity') {
+            return {
+              title: "Recommended: Hospital Tour",
+              desc: `Based on your trimester, we suggest booking a tour of Corniche Hospital by ${dateStr}.`,
+              icon: "Building2",
+              style: "bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-100 text-blue-900"
+            };
+          }
+          if (journeyKey === 'child_health' || journeyKey === 'newborn') {
+            return {
+              title: "Upcoming: 4-Month Vaccinations",
+              desc: `Your baby is due for the DTaP booster around ${dateStr}. Book ahead to secure a slot.`,
+              icon: "ShieldCheck",
+              style: "bg-gradient-to-r from-emerald-50 to-teal-50 border-teal-100 text-teal-900"
+            };
+          }
+          if (journeyKey === 'marriage') {
+             return {
+              title: "Financial Planning Insight",
+              desc: "Couples who complete the 'Marriage Grant' application now typically receive approval within 21 days.",
+              icon: "Gift",
+              style: "bg-gradient-to-r from-purple-50 to-fuchsia-50 border-purple-100 text-purple-900"
+            };
+          }
+          return null; 
+        };
+
+        const prediction = getPrediction();
+        if (!prediction) return null;
+
+        const Icon = Icons[prediction.icon] || Icons.Lightbulb;
+
+        return (
+          <div className={`mb-6 p-4 rounded-xl border shadow-sm flex items-start gap-4 animate-in fade-in slide-in-from-top-4 ${prediction.style}`}>
+             <div className="p-2.5 bg-white rounded-full shadow-sm shrink-0">
+               <Icon className="h-5 w-5" />
+             </div>
+             <div>
+               <div className="flex items-center gap-2 mb-1">
+                 <h4 className="font-bold text-sm">{prediction.title}</h4>
+                 <Badge variant="outline" className="bg-white/50 text-[10px] h-5 border-0">AI Outlook</Badge>
+               </div>
+               <p className="text-xs opacity-80 leading-relaxed">{prediction.desc}</p>
+             </div>
+          </div>
+        );
+      }
 
       function JourneyTimeline({ data, onAction }) {
         if (!data || !data.steps || !data.steps.length) return <div className="text-sm text-slate-400 italic p-4">Timeline available upon activation.</div>;
@@ -288,6 +529,8 @@
               const isCompleted = step.status === 'completed';
               const isCurrent = step.status === 'current';
               const hasAction = step.actionLabel && isCurrent;
+              const isFinancial = step.financial;
+              const hasInsurance = step.insurance;
               
               return (
                 <div key={i} className="relative pl-6">
@@ -297,19 +540,30 @@
                     {isCompleted && <Icons.CheckCircle2 className="w-3 h-3 text-white absolute top-[-1px] left-[-1px]" />}
                   </div>
                   
-                  <div className={`flex flex-col ${isCurrent ? 'opacity-100' : 'opacity-70'}`}>
+                  <div className={`flex flex-col ${isCurrent ? 'opacity-100' : 'opacity-70'} ${isFinancial ? 'bg-amber-50/50 p-3 rounded-xl border border-amber-100 -ml-3' : ''}`}>
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col">
-                        <span className={`text-sm font-bold ${isCurrent ? 'text-teal-800' : 'text-slate-900'}`}>{step.title}</span>
+                        <div className="flex items-center gap-2">
+                            <span className={`text-sm font-bold ${isCurrent ? 'text-teal-800' : 'text-slate-900'} ${isFinancial ? 'text-amber-900' : ''}`}>{step.title}</span>
+                            {isFinancial && <Icons.Banknote className="h-4 w-4 text-amber-600" />}
+                        </div>
                         <div className="flex gap-2 text-[10px] text-slate-400 mt-0.5">
                           {step.channel && <span className="flex items-center gap-1"><Icons.Smartphone className="h-3 w-3" /> {step.channel}</span>}
                           {step.entity && <span className="flex items-center gap-1"><Icons.Building2 className="h-3 w-3" /> {step.entity}</span>}
                         </div>
                       </div>
                       {step.systemNote && <Badge variant="secondary" className="text-[10px] h-5">{step.systemNote}</Badge>}
+                      {isFinancial && <Badge variant="gold" className="text-[10px] font-bold">{step.financial}</Badge>}
                     </div>
                     <span className="text-xs text-slate-500 mt-1">{step.desc}</span>
                     
+                    {hasInsurance && (
+                        <div className="mt-2 flex items-center gap-1.5 text-xs font-medium text-teal-700 bg-teal-50 px-2 py-1 rounded-md w-fit">
+                            <Icons.ShieldCheck className="h-3.5 w-3.5" />
+                            {step.insurance}
+                        </div>
+                    )}
+
                     {hasAction && (
                       <div className="mt-3">
                         <Button 
@@ -322,9 +576,9 @@
                         </Button>
                       </div>
                     )}
-                    {isCurrent && !hasAction && (
+                    {isCurrent && !hasAction && !isFinancial && (
                       <div className="mt-3">
-                         <Badge variant="amber" className="font-normal">In Progress</Badge>
+                          <Badge variant="amber" className="font-normal">In Progress</Badge>
                       </div>
                     )}
                   </div>
@@ -394,6 +648,7 @@
         const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
         const [isNotificationsOpen, setIsNotificationsOpen] = useState(false); 
         const [isCustomizeOpen, setIsCustomizeOpen] = useState(false); 
+        const [activeVital, setActiveVital] = useState(null); // For Health Trend Modal
         const [visibleJourneyIds, setVisibleJourneyIds] = useState(["premarital", "marriage", "family_planning", "maternity", "birth", "child_health", "adolescent", "adult", "elderly", "sanadkom"]);
 
         const personas = getPersonas(babyName, revealedGender);
@@ -411,6 +666,8 @@
         const handleRestartMarriage = () => { alert("New Marriage Application Started!"); };
         const handleBookingConfirm = () => { alert("Booking Confirmed!"); setIsBookingModalOpen(false); };
         const toggleJourneyVisibility = (id) => { setVisibleJourneyIds(prev => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]); };
+        
+        const handleEmergency = () => { alert("AMBULANCE DISPATCHED!\n\nLive tracking link sent to your phone.\nParamedics ETA: 8 mins."); };
 
         // ... (Spine Logic)
         const getSpineForProfile = (profile) => {
@@ -496,8 +753,8 @@
               {/* METRO MAP NAV */}
               <div className="relative pt-4">
                   <div className="flex justify-end mb-2">
-                     <button onClick={() => setIsCustomizeOpen(!isCustomizeOpen)} className="text-xs font-medium text-teal-700 hover:text-teal-800 flex items-center gap-1"><Icons.Settings2 className="h-3.5 w-3.5" /> Customize Journey</button>
-                     {isCustomizeOpen && (<div className="absolute top-8 right-0 z-20 w-64 bg-white rounded-xl shadow-xl border border-slate-200 p-4 animate-in fade-in slide-in-from-top-2"><h4 className="text-sm font-bold mb-3">Visible Stages</h4><div className="space-y-2 max-h-60 overflow-y-auto pr-2">{ALL_LIFE_SPINE.map(s => (<label key={s.id} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded"><div className={`w-4 h-4 rounded border flex items-center justify-center ${visibleJourneyIds.includes(s.id) ? 'bg-teal-600 border-teal-600' : 'border-slate-300'}`} onClick={() => toggleJourneyVisibility(s.id)}>{visibleJourneyIds.includes(s.id) && <Icons.CheckCircle2 className="w-3 h-3 text-white" />}</div><span>{s.label}</span></label>))}</div></div>)}
+                      <button onClick={() => setIsCustomizeOpen(!isCustomizeOpen)} className="text-xs font-medium text-teal-700 hover:text-teal-800 flex items-center gap-1"><Icons.Settings2 className="h-3.5 w-3.5" /> Customize Journey</button>
+                      {isCustomizeOpen && (<div className="absolute top-8 right-0 z-20 w-64 bg-white rounded-xl shadow-xl border border-slate-200 p-4 animate-in fade-in slide-in-from-top-2"><h4 className="text-sm font-bold mb-3">Visible Stages</h4><div className="space-y-2 max-h-60 overflow-y-auto pr-2">{ALL_LIFE_SPINE.map(s => (<label key={s.id} className="flex items-center gap-2 text-sm cursor-pointer hover:bg-slate-50 p-1 rounded"><div className={`w-4 h-4 rounded border flex items-center justify-center ${visibleJourneyIds.includes(s.id) ? 'bg-teal-600 border-teal-600' : 'border-slate-300'}`} onClick={() => toggleJourneyVisibility(s.id)}>{visibleJourneyIds.includes(s.id) && <Icons.CheckCircle2 className="w-3 h-3 text-white" />}</div><span>{s.label}</span></label>))}</div></div>)}
                   </div>
                   
                   <div className="overflow-x-auto pb-16 pt-4 hide-scrollbar">
@@ -588,9 +845,15 @@
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                 <div className="lg:col-span-2 space-y-8">
-                  {activeProfile === 'father' && <FathersHealthCard />}
+                  {activeProfile === 'father' && (
+                      <FathersHealthCard 
+                          onVitalClick={(vital) => setActiveVital(vital)} 
+                          onEmergency={handleEmergency}
+                      />
+                  )}
                   {JOURNEY_DATA[activeJourneyKey] ? (
                       <>
+                        <FutureOutlookCard journeyKey={activeJourneyKey} />
                         <JourneyProgressCard journeyKey={activeJourneyKey} data={JOURNEY_DATA[activeJourneyKey]} onAction={(action) => { if(action === 'restart_marriage') handleRestartMarriage(); }} />
                         <Card className="bg-white overflow-hidden min-h-[300px]">
                             <div className="p-6">
@@ -605,6 +868,8 @@
                 </div>
 
                 <div className="space-y-6">
+                  {/* NEW: Gamified Health Score Component */}
+                  <FamilyHealthScore />
                   <InteractiveAIAssistant persona={personaKey} activeStage={activeJourneyKey} activeProfile={activeProfile} />
                   <Card>
                     <CardHeader className="pb-3 border-b border-slate-100 bg-slate-50/50"><div className="flex items-center justify-between"><CardTitle className="text-base flex items-center gap-2"><Icons.FileText className="h-4 w-4" /> Documents</CardTitle><Badge variant="outline" className="bg-white">Digital Locker</Badge></div></CardHeader>
@@ -661,6 +926,7 @@
               <GenderRevealModal isOpen={isRevealModalOpen} onClose={() => setIsRevealModalOpen(false)} onReveal={handleGenderReveal} />
               <BookingModal isOpen={isBookingModalOpen} onClose={() => setIsBookingModalOpen(false)} onConfirm={handleBookingConfirm} serviceName="Premarital Screening" />
               <DocumentPreviewModal isOpen={!!activeDocument} onClose={() => setActiveDocument(null)} docType={activeDocument} persona={personaKey} babyName={babyName} />
+              <HealthTrendModal isOpen={!!activeVital} onClose={() => setActiveVital(null)} vitalType={activeVital} />
 
             </div>
           </div>
